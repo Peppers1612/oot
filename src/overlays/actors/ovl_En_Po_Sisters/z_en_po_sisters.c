@@ -1,3 +1,9 @@
+/*
+ * File: z_en_po_sisters.c
+ * Overlay: ovl_En_Po_Sisters
+ * Description: Poe Sisters
+ */
+
 #include "z_en_po_sisters.h"
 
 #define FLAGS 0x00005215
@@ -39,7 +45,60 @@ s32 D_80ADD7D8[] = { 0x06001CB0, 0x06002EB8, 0x06003880, 0x06004020 };
 s32 D_80ADD7E8[] = { 0x50006400, 0x500F0000, 0x00463200, 0x46460000 };
 s32 D_80ADD7F8[] = { 0x447A0000, 0xC4D48000, 0x00000000, 0x00000000, 0x00000000, 0x00000000 };
 
-#pragma GLOBAL_ASM("asm/non_matchings/overlays/actors/ovl_En_Po_Sisters/EnPoSisters_Init.s")
+extern SkeletonHeader D_060065C8;
+extern AnimationHeader D_060014CC;
+
+void EnPoSisters_Init(Actor* thisx, GlobalContext* globalCtx) {
+    EnPoSisters* this = THIS;
+
+    s32 pad;
+
+    Actor_ProcessInitChain(&this->actor, (InitChainEntry*)D_80ADD788);
+    ActorShape_Init(&this->actor.shape, 0.0f, &ActorShadow_DrawFunc_Circle, 50.0f);
+    SkelAnime_Init(globalCtx, &this->unk_14C, &D_060065C8, &D_060014CC, this->limbDrawTable,
+                   this->limbTransitionDrawTable, 12);
+
+    this->unk_22E = 0xFF;
+    this->unk_22F = 0xFF;
+    this->unk_230 = 0xD2;
+    this->unk_231 = 0xFF;
+
+    this->lightNode = LightContext_InsertLight(globalCtx, &globalCtx->lightCtx, &this->lightInfo);
+    Lights_PointGlowSetInfo(&this->lightInfo, this->actor.initPosRot.pos.x, this->actor.initPosRot.pos.y,
+                            this->actor.initPosRot.pos.z, 0, 0, 0, 0);
+
+    Collider_InitCylinder(globalCtx, &this->collider);
+    Collider_SetCylinder(globalCtx, &this->collider, &this->actor, (ColliderCylinderInit*)D_80ADD730);
+    func_80061ED4(&this->actor.colChkInfo, (DamageTable*)D_80ADD764, (CollisionCheckInfoInit*)D_80ADD75C);
+
+    this->color = (THIS->actor.params >> 8) & 3;
+    this->actor.naviEnemyId = THIS->color + 0x50;
+    this->unk_195 = (THIS->actor.params >> 10) & 3;
+    this->unk_196 = 0x20;
+    this->unk_197 = 0x14;
+    this->unk_198 = 1;
+    this->unk_199 = 0x20;
+    this->unk_294 = 110.0f;
+    this->actor.flags &= -2;
+
+    if ((this->actor.params & 0x1000) != 0) {
+        func_80ADA094(this, globalCtx);
+    } else if (this->color == 0) {
+        if (this->unk_195 == 0) {
+            this->collider.base.maskA = 9;
+            func_80AD9AA8(this, globalCtx);
+        } else {
+            this->actor.flags = this->actor.flags & -0x4201;
+            this->collider.body.flags = 4;
+            this->collider.body.bumper.flags |= 1;
+            this->collider.base.maskA = 0;
+            func_80AD9C24(this, 0);
+        }
+    } else {
+        func_80AD9D44(this);
+    }
+    this->actor.params = (s16)(this->actor.params & 0x3F);
+}
 
 #pragma GLOBAL_ASM("asm/non_matchings/overlays/actors/ovl_En_Po_Sisters/EnPoSisters_Destroy.s")
 
