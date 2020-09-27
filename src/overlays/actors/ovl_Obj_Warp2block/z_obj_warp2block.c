@@ -111,7 +111,12 @@ void ObjWarp2block_Init(Actor* thisx, GlobalContext* globalCtx) {
                  this->dyna.actor.initPosRot.rot.z & 7, (this->dyna.actor.params >> 11) & 7);
 }
 
-#pragma GLOBAL_ASM("asm/non_matchings/overlays/actors/ovl_Obj_Warp2block/ObjWarp2block_Destroy.s")
+void ObjWarp2block_Destroy(Actor* thisx, GlobalContext* globalCtx) {
+    ObjWarp2block* this = THIS;
+    if ((this->dyna.actor.params >> 15) & 1) {
+        DynaPolyInfo_Free(globalCtx, &globalCtx->colCtx.dyna, this->dyna.dynaPolyId);
+    }
+}
 
 #pragma GLOBAL_ASM("asm/non_matchings/overlays/actors/ovl_Obj_Warp2block/func_80BA24C8.s")
 
