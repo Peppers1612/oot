@@ -32,6 +32,7 @@ void func_80BA24F8(ObjWarp2block* this, GlobalContext* globalCtx);
 // func_80BA2600
 void func_80BA2610(ObjWarp2block* this, GlobalContext* globalCtx);
 
+extern Gfx D_06000980[];
 extern s32 D_06000B30;
 
 const ActorInit Obj_Warp2block_InitVars = {
@@ -65,7 +66,8 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 1500, ICHAIN_STOP),
 };
 
-s32 D_80BA2884[] = { 0x64788C50, 0x8CC86496, 0xC864C8F0, 0x506E8C46, 0xA0E15064, 0x82646EBE, 0x00000000 };
+static Color_RGB8 sPrimColors[] = { { 100, 120, 140 }, { 80, 140, 200 }, { 100, 150, 200 }, { 100, 200, 240 },
+                                    { 80, 110, 140 },  { 70, 160, 225 }, { 80, 100, 130 },  { 100, 110, 190 } };
 
 #pragma GLOBAL_ASM("asm/non_matchings/overlays/actors/ovl_Obj_Warp2block/func_80BA1DF0.s")
 
@@ -138,4 +140,16 @@ void ObjWarp2block_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-#pragma GLOBAL_ASM("asm/non_matchings/overlays/actors/ovl_Obj_Warp2block/ObjWarp2block_Draw.s")
+void ObjWarp2block_Draw(Actor* thisx, GlobalContext* globalCtx) {
+    Color_RGB8* primColor = &sPrimColors[THIS->dyna.actor.initPosRot.rot.z & 7];
+    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_obj_warp2block.c", 584);
+
+    func_80093D18(globalCtx->state.gfxCtx);
+
+    gSPMatrix(oGfxCtx->polyOpa.p++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_obj_warp2block.c", 588),
+              G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gDPSetPrimColor(oGfxCtx->polyOpa.p++, 0, 0, primColor->r, primColor->g, primColor->b, 255);
+    gSPDisplayList(oGfxCtx->polyOpa.p++, D_06000980);
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_obj_warp2block.c", 594);
+}
