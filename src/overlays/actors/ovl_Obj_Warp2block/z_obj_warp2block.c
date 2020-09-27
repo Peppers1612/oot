@@ -28,7 +28,6 @@ void func_80BA24F8(ObjWarp2block* this, GlobalContext* globalCtx);
 // func_80BA2600
 void func_80BA2610(ObjWarp2block* this, GlobalContext* globalCtx);
 
-/*
 const ActorInit Obj_Warp2block_InitVars = {
     ACTOR_OBJ_WARP2BLOCK,
     ACTORTYPE_ITEMACTION,
@@ -40,7 +39,13 @@ const ActorInit Obj_Warp2block_InitVars = {
     (ActorFunc)ObjWarp2block_Update,
     (ActorFunc)ObjWarp2block_Draw,
 };
-*/
+
+s32 D_80BA2840 = 0x3F800000;
+s32 D_80BA2844 = 0x42700000;
+s32 D_80BA2848[] = {0x00180000, 0x3F19999A, 0x42200000, 0x00190000};
+s32 D_80BA2858[] = {0x42700000, 0x42C80000, 0x430C0000, 0x43340000, 0x435C0000, 0x43820000, 0x43960000, 0x43960000};
+s32 D_80BA2878[] = {0xB0F40708, 0xB0F8012C, 0x30FC05DC};
+s32 D_80BA2884[] = {0x64788C50, 0x8CC86496, 0xC864C8F0, 0x506E8C46, 0xA0E15064, 0x82646EBE, 0x00000000};
 
 #pragma GLOBAL_ASM("asm/non_matchings/overlays/actors/ovl_Obj_Warp2block/func_80BA1DF0.s")
 

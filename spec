@@ -3641,7 +3641,6 @@ endseg
 beginseg
     name "ovl_Obj_Warp2block"
     include "build/src/overlays/actors/ovl_Obj_Warp2block/z_obj_warp2block.o"
-    include "build/data/overlays/actors/z_obj_warp2block.data.o"
     include "build/data/overlays/actors/z_obj_warp2block.reloc.o"
 endseg
 
