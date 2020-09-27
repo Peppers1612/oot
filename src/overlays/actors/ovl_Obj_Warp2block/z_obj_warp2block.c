@@ -130,6 +130,12 @@ void ObjWarp2block_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 
 #pragma GLOBAL_ASM("asm/non_matchings/overlays/actors/ovl_Obj_Warp2block/func_80BA2610.s")
 
-#pragma GLOBAL_ASM("asm/non_matchings/overlays/actors/ovl_Obj_Warp2block/ObjWarp2block_Update.s")
+void ObjWarp2block_Update(Actor* thisx, GlobalContext* globalCtx) {
+    ObjWarp2block* this = THIS;
+    this->actionFunc_164(this, globalCtx);
+    if (this->unk_16C > 0) {
+        this->unk_16C--;
+    }
+}
 
 #pragma GLOBAL_ASM("asm/non_matchings/overlays/actors/ovl_Obj_Warp2block/ObjWarp2block_Draw.s")
